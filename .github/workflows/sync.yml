@@ -1,4 +1,4 @@
-name: Sync Fork
+name: Sync For & Gitlab mirror
 on:
   schedule:
     - cron: '0 0 * * MON,WED,FRI,SUN'
@@ -14,12 +14,11 @@ jobs:
           repo: Ryujinx
           auto_approve: true
           ignore_fail: true
-  sync-mirror:
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v2
-      - uses: adambirds/sync-github-to-gitlab-action@v1.1.0
         with:
-          destination_repository: git@git.fpalomo.es:ryujinx/ryujinx.git
-          destination_branch_name: master
-          destination_ssh_key: ${{ secrets.GITLAB_SSH_KEY }}
+          fetch-depth: 0
+      - uses: wangchucheng/git-repo-sync@v0.1.0
+        with:
+          target-url: ${{ secrets.TARGET_URL }}
+          target-username: ${{ secrets.TARGET_USERNAME }}
+          target-token: ${{ secrets.TARGET_TOKEN }}
