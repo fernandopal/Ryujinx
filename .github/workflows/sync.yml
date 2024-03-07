@@ -4,7 +4,7 @@ on:
     - cron: '0 0 * * MON,WED,FRI,SUN'
   workflow_dispatch:
 jobs:
-  sync:
+  sync-fork:
     runs-on: ubuntu-latest
     steps:
       - uses: tgymnich/fork-sync@v1.8
@@ -14,3 +14,12 @@ jobs:
           repo: Ryujinx
           auto_approve: true
           ignore_fail: true
+  sync-mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: adambirds/sync-github-to-gitlab-action@v1.1.0
+        with:
+          destination_repository: git@git.fpalomo.es:ryujinx/ryujinx.git
+          destination_branch_name: master
+          destination_ssh_key: ${{ secrets.GITLAB_SSH_KEY }}
